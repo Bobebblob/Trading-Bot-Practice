@@ -37,5 +37,32 @@ microsoft = market.tickers['MSFT']
 #print(market.history())
 #print(microsoft.history())
 
-stock_data = yf.download(["AAPL", "MSFT"])
+stock_data = yf.download(["AAPL", "MSFT"]) #just prices
 
+us_market = yf.Market('US')
+
+#print(us_market.status)
+#print(us_market.summary) #also shows indices of that market
+
+tech_sector = yf.Sector("technology")
+
+#print(tech_sector.industries)
+#print(tech_sector.top_companies)
+
+this_month = yf.Calendars(start='2026-04-01', end='2026-05-01')
+
+#print(this_month.earnings_calendar.to_string())
+#print(this_month.economic_events_calendar)
+#print(this_month.ipo_info_calendar)
+#print(this_month.splits_calendar)
+
+#print(this_month.calendars)
+
+#apple_search = yf.Lookup('apple')
+
+#print(apple_search.stock)
+
+actual_apple = yf.Search('apple', max_results=5, news_count=3)
+
+#print(actual_apple.quotes)
+print(actual_apple.news)
