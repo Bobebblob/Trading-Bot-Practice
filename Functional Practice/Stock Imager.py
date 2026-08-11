@@ -44,3 +44,6 @@ if __name__ == '__main__':
     #plt.title(f"{stock} Closing Prices")
     plt.tight_layout()
     plt.show()
+    print(f'Number of Trading Days: {dfdates.size}\n'
+          f'Starting Date: {dfdates[0].tz_localize(None)}\n'
+          f'End Date: {dfdates[-1].tz_localize(None)}\n')
