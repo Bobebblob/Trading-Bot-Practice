@@ -8,6 +8,9 @@ import yfinance as yf
 def load(name, time):
     return yf.download(name, period=time)
 
+#Add functionality to compare two different stocks
+
+
 if __name__ == '__main__':
     stock = input('Input the Ticker you would like to visualize: ').upper()
     timeperiod = input(f'What length of time would you like to visualize?\n'
@@ -19,11 +22,11 @@ if __name__ == '__main__':
     dfhigh = df['High']
     dflow = df['Low']
     dfvol = df['Volume']
-    mavg = (dfclose + dfopen)/2
+    mavg = dfclose.rolling(20).mean()
+    full_graph_mavg = dfclose.rolling(20, min_periods=1).mean()
 
     figure, axes = plt.subplots(3,2)
     #figure.delaxes(axes[2, 1])
-
     #print(dfdates)
 
     #plt.plot(range(dfdates.size), dfclose)
@@ -39,13 +42,20 @@ if __name__ == '__main__':
     plt.tight_layout()
     plt.show()
     print(f'Number of Trading Days: {dfdates.size}\n'
-          f'Starting Date: {dfdates[0].tz_localize(None)}\n'
-          f'End Date: {dfdates[-1].tz_localize(None)}\n\n'
+          f'Starting Date: {dfdates[0].date()}\n'
+          f'End Date: {dfdates[-1].date()}\n\n'
           'Closing Data: \n'
-          f'Highest Closing Price: {dfclose.max(numeric_only=True)}\n'
-          f'Lowest Closing Price: {dfclose.min(numeric_only=True)}\n'
-          f'Average Closing Price: {dfclose.mean(numeric_only=True)}\n\n'
+          #f'{dfclose["AAPL"]}'
+          #f'{df.columns}'
+          #f'{df.columns.nlevels}'
+          #each of these functions returns a series under the column "stock"
+          f'Highest Closing Price: {dfclose.max().iloc[0]:.1f} points\n'
+          f'Lowest Closing Price: {dfclose.min().loc[stock]:.1f} points\n'
+          f'Average Closing Price: {dfclose.mean()[stock]:.1f} points\n\n'
           'Gain & Loss Data: \n'
-          f'Largest Day Gain: {(dfclose-dfopen).max(numeric_only=True)} points\n'
-          f'Largest Day Loss: {(dfclose-dfopen).min(numeric_only=True)*(-1)} points\n\n'
+          f'Largest Day Gain: {(dfclose-dfopen).max()[stock]:.1f} points\n'
+          f'Largest Day Loss: {(dfclose-dfopen).min()[stock]*(-1):.1f} points\n\n'
+          #f'20 Day Rolling Average: {mavg}\n'
+          #f'{dfclose.head(25)}'
+          #f'{mavg.head(25)}'
           )
